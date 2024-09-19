@@ -1,5 +1,21 @@
-import { collection, getDocs, getDoc, doc, addDoc, updateDoc, deleteDoc, query, where } from "firebase/firestore";
-import { db } from "../firebaseConfig.js"; // Archivo con la configuración de Firebase
+// Importa Firebase y Firestore
+import { initializeApp } from "firebase/app";
+import { getFirestore, collection, getDocs, getDoc, doc, addDoc, updateDoc, deleteDoc, query, where } from "firebase/firestore";
+
+// Configura Firebase (usa tu propia configuración obtenida de Firebase Console)
+const firebaseConfig = {
+    apiKey: "AIzaSyCx8GI5km0guJojFuOb9KDKNSclqFQBhLI",
+    authDomain: "taskban-v1.firebaseapp.com",
+    projectId: "taskban-v1",
+    storageBucket: "taskban-v1.appspot.com",
+    messagingSenderId: "774075443466",
+    appId: "1:774075443466:web:0b1ccf90595264ef8872f3",
+    measurementId: "G-1MCX6F9W86"
+};
+
+// Inicializa Firebase y Firestore
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 // Obtener usuarios por ID del equipo
 export const getUsersByTeamId = async (teamId) => {
