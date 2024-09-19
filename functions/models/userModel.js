@@ -51,6 +51,25 @@ export const getUserById = async (userId) => {
     }
 };
 
+// Obtener un usuario por UID (nuevo)
+export const getUserByUID = async (uid) => {
+    try {
+        const usersCollection = collection(db, 'users');
+        const q = query(usersCollection, where('UID', '==', uid));
+        const usersSnapshot = await getDocs(q);
+        if (!usersSnapshot.empty) {
+            const user = usersSnapshot.docs[0]; // Como el UID es único, solo debería haber un resultado
+            return { id: user.id, ...user.data() };
+        } else {
+            console.log("User with UID not found");
+            return null;
+        }
+    } catch (error) {
+        console.error("Error fetching user by UID:", error);
+        throw error;
+    }
+};
+
 // Crear un nuevo usuario
 export const createUser = async (user) => {
     try {
@@ -62,7 +81,6 @@ export const createUser = async (user) => {
         throw error;
     }
 };
-
 
 // Actualizar un usuario existente
 export const updateUser = async (userId, updatedUser) => {

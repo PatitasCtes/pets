@@ -1,4 +1,4 @@
-import { getUsersByTeamId, createUser, getUserById, updateUser, deleteUser } from "../models/userModel.js";
+import { getUsersByTeamId, createUser, getUserById, updateUser, deleteUser, getUserByUID } from "../models/userModel.js";
 
 // Obtener usuarios por ID del equipo
 export const fetchUsers = async (req, res) => {
@@ -38,24 +38,43 @@ export const fetchUserById = async (req, res) => {
     }
 };
 
+// Obtener un usuario por UID (nuevo endpoint)
+export const fetchUserByUID = async (req, res) => {
+    const { uid } = req.params;
+
+    if (!uid) {
+        return res.status(400).json({ message: "UID is required" });
+    }
+
+    try {
+        const user = await getUserByUID(uid);
+        if (user) {
+            res.json(user);
+        } else {
+            res.status(404).json({ message: "User not found" });
+        }
+    } catch (error) {
+        console.error("Error fetching user by UID:", error);
+        res.status(500).json({ message: "Error fetching user" });
+    }
+};
 
 // Crear un nuevo usuario
 export const addUser = async (req, res) => {
-    const { name, rol, description, email, teamId, isAdmin, photoURL, uid } = req.body; // Agregar UID aquí
+    const { name, rol, description, email, teamId, isAdmin, photoURL, UID } = req.body;
 
-    if (!name || !email || !teamId || !uid) {  // Asegurarse de que UID esté incluido en la validación
+    if (!name || !email || !teamId || !UID) {
         return res.status(400).json({ message: "Name, email, teamId, and UID are required" });
     }
 
     try {
-        const userId = await createUser({ name, rol, description, email, teamId, isAdmin, photoURL, uid }); // Pasar UID al crear el usuario
+        const userId = await createUser({ name, rol, description, email, teamId, isAdmin, photoURL, UID });
         res.status(201).json({ message: "User created", userId });
     } catch (error) {
         console.error("Error creating user:", error);
         res.status(500).json({ message: "Error creating user" });
     }
 };
-
 
 // Actualizar un usuario existente
 export const updateUserById = async (req, res) => {
