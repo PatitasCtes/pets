@@ -41,20 +41,21 @@ export const fetchUserById = async (req, res) => {
 
 // Crear un nuevo usuario
 export const addUser = async (req, res) => {
-    const { name, rol, description, email, teamId, isAdmin, photoURL } = req.body;
+    const { name, rol, description, email, teamId, isAdmin, photoURL, uid } = req.body; // Agregar UID aquí
 
-    if (!name || !email || !teamId) {
-        return res.status(400).json({ message: "Name, email, and teamId are required" });
+    if (!name || !email || !teamId || !uid) {  // Asegurarse de que UID esté incluido en la validación
+        return res.status(400).json({ message: "Name, email, teamId, and UID are required" });
     }
 
     try {
-        const userId = await createUser({ name, rol, description, email, teamId, isAdmin, photoURL });
+        const userId = await createUser({ name, rol, description, email, teamId, isAdmin, photoURL, uid }); // Pasar UID al crear el usuario
         res.status(201).json({ message: "User created", userId });
     } catch (error) {
         console.error("Error creating user:", error);
         res.status(500).json({ message: "Error creating user" });
     }
 };
+
 
 // Actualizar un usuario existente
 export const updateUserById = async (req, res) => {

@@ -55,13 +55,14 @@ export const getUserById = async (userId) => {
 export const createUser = async (user) => {
     try {
         const usersCollection = collection(db, 'users');
-        const docRef = await addDoc(usersCollection, user);
+        const docRef = await addDoc(usersCollection, user); // El UID se pasará junto con los demás datos del usuario
         return docRef.id;
     } catch (error) {
         console.error("Error creating user:", error);
         throw error;
     }
 };
+
 
 // Actualizar un usuario existente
 export const updateUser = async (userId, updatedUser) => {
