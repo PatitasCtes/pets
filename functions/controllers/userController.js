@@ -38,16 +38,17 @@ export const fetchUserById = async (req, res) => {
     }
 };
 
+
 // Crear un nuevo usuario
 export const addUser = async (req, res) => {
-    const { name, role, description, email, teamId, isAdmin } = req.body;
+    const { name, rol, description, email, teamId, isAdmin, photoURL } = req.body;
 
-    if (!name || !role || !email || !teamId) {
-        return res.status(400).json({ message: "All required fields must be filled" });
+    if (!name || !email || !teamId) {
+        return res.status(400).json({ message: "Name, email, and teamId are required" });
     }
 
     try {
-        const userId = await createUser(req.body);
+        const userId = await createUser({ name, rol, description, email, teamId, isAdmin, photoURL });
         res.status(201).json({ message: "User created", userId });
     } catch (error) {
         console.error("Error creating user:", error);
@@ -58,14 +59,14 @@ export const addUser = async (req, res) => {
 // Actualizar un usuario existente
 export const updateUserById = async (req, res) => {
     const { userId } = req.params;
-    const { name, role, description, email, isAdmin } = req.body;
+    const { name, rol, description, email, teamId, isAdmin, photoURL } = req.body;
 
     if (!userId) {
         return res.status(400).json({ message: "User ID is required" });
     }
 
     try {
-        const updatedUser = { name, role, description, email, isAdmin };
+        const updatedUser = { name, rol, description, email, teamId, isAdmin, photoURL };
 
         // Filtrar campos no provistos
         Object.keys(updatedUser).forEach(key => updatedUser[key] === undefined && delete updatedUser[key]);
