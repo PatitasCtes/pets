@@ -40,14 +40,14 @@ export const fetchUserById = async (req, res) => {
 
 // Obtener un usuario por UID (nuevo endpoint)
 export const fetchUserByUID = async (req, res) => {
-    const { uid } = req.params;
+    const { userId } = req.query; // Ahora usa req.query en lugar de req.params
 
-    if (!uid) {
+    if (!userId) {
         return res.status(400).json({ message: "UID is required" });
     }
 
     try {
-        const user = await getUserByUID(uid);
+        const user = await getUserByUID(userId);
         if (user) {
             res.json(user);
         } else {
@@ -58,6 +58,7 @@ export const fetchUserByUID = async (req, res) => {
         res.status(500).json({ message: "Error fetching user" });
     }
 };
+
 
 // Crear un nuevo usuario
 export const addUser = async (req, res) => {
