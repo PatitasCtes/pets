@@ -1,0 +1,18 @@
+[
+  {
+    "titulo": "Nueva Tarea2",
+    "descripcion": "Descripción de la nueva tarea2",
+    "fechaCreacion": "2024-09-11",
+    "fechaVencimiento": "2024-09-18",
+    "boardId": 1,
+    "TareaId": 1
+  },
+  {
+    "titulo": "Nueva Tarea2",
+    "descripcion": "Descripción de la nueva tarea2",
+    "fechaCreacion": "2024-09-11",
+    "fechaVencimiento": "2024-09-18",
+    "boardId": 1,
+    "TareaId": 2
+  }
+]
