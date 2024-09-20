@@ -38,16 +38,15 @@ export const fetchUserById = async (req, res) => {
     }
 };
 
-// Obtener un usuario por UID (nuevo endpoint)
+// Obtener un usuario por UID
 export const fetchUserByUID = async (req, res) => {
-    const { userId } = req.query; // Ahora usa req.query en lugar de req.params
-
-    if (!userId) {
+    const { UID } = req.params;
+    if (!UID) {
         return res.status(400).json({ message: "UID is required" });
     }
 
     try {
-        const user = await getUserByUID(userId);
+        const user = await getUserByUID(UID);
         if (user) {
             res.json(user);
         } else {
@@ -59,17 +58,16 @@ export const fetchUserByUID = async (req, res) => {
     }
 };
 
-
 // Crear un nuevo usuario
 export const addUser = async (req, res) => {
-    const { name, rol, description, email, teamId, isAdmin, photoURL, UID } = req.body;
+    const { name, rol, description, email, teamId, isAdmin, photoURL, userUID } = req.body;
 
-    if (!name || !email || !teamId || !UID) {
-        return res.status(400).json({ message: "Name, email, teamId, and UID are required" });
+    if (!name || !email || !teamId || !userUID) {
+        return res.status(400).json({ message: "Name, email, teamId, and userUID are required" });
     }
 
     try {
-        const userId = await createUser({ name, rol, description, email, teamId, isAdmin, photoURL, UID });
+        const userId = await createUser({ name, rol, description, email, teamId, isAdmin, photoURL, userUID });
         res.status(201).json({ message: "User created", userId });
     } catch (error) {
         console.error("Error creating user:", error);
@@ -80,14 +78,14 @@ export const addUser = async (req, res) => {
 // Actualizar un usuario existente
 export const updateUserById = async (req, res) => {
     const { userId } = req.params;
-    const { name, rol, description, email, teamId, isAdmin, photoURL } = req.body;
+    const { name, rol, description, email, teamId, isAdmin, photoURL, userUID } = req.body;
 
     if (!userId) {
         return res.status(400).json({ message: "User ID is required" });
     }
 
     try {
-        const updatedUser = { name, rol, description, email, teamId, isAdmin, photoURL };
+        const updatedUser = { name, rol, description, email, teamId, isAdmin, photoURL, userUID };
 
         // Filtrar campos no provistos
         Object.keys(updatedUser).forEach(key => updatedUser[key] === undefined && delete updatedUser[key]);

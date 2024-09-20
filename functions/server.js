@@ -11,7 +11,7 @@ const router = express.Router();
 // Rutas de usuarios
 router.get("/users", fetchUsers); // Obtener usuarios por teamId
 router.post("/users", addUser); // Crear un nuevo usuario
-router.get("/users/uid", fetchUserByUID);  // Obtener un usuario por UID
+router.get("/users/uid/:UID", fetchUserByUID); // Obtener un usuario por UID
 router.get("/users/:userId", fetchUserById); // Obtener un usuario por ID
 router.put("/users/:userId", updateUserById); // Actualizar un usuario por ID
 router.delete("/users/:userId", deleteUserById); // Eliminar un usuario por ID

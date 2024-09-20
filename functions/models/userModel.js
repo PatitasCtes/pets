@@ -1,8 +1,7 @@
-// Importa Firebase y Firestore
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, getDocs, getDoc, doc, addDoc, updateDoc, deleteDoc, query, where } from "firebase/firestore";
+import { getFirestore, collection, getDocs, getDoc, addDoc, updateDoc, deleteDoc, query, where, doc } from "firebase/firestore";
 
-// Configura Firebase (usa tu propia configuración obtenida de Firebase Console)
+// Configura Firebase
 const firebaseConfig = {
     apiKey: "AIzaSyCx8GI5km0guJojFuOb9KDKNSclqFQBhLI",
     authDomain: "taskban-v1.firebaseapp.com",
@@ -23,11 +22,7 @@ export const getUsersByTeamId = async (teamId) => {
         const usersCollection = collection(db, 'users');
         const q = query(usersCollection, where('teamId', '==', teamId));
         const usersSnapshot = await getDocs(q);
-        const usersList = usersSnapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data()
-        }));
-        return usersList;
+        return usersSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     } catch (error) {
         console.error("Error fetching users:", error);
         throw error;
@@ -41,29 +36,25 @@ export const getUserById = async (userId) => {
         const userSnapshot = await getDoc(userRef);
         if (userSnapshot.exists()) {
             return { id: userSnapshot.id, ...userSnapshot.data() };
-        } else {
-            console.log("User not found");
-            return null;
         }
+        return null;
     } catch (error) {
         console.error("Error fetching user:", error);
         throw error;
     }
 };
 
-// Obtener un usuario por UID (nuevo)
+// Obtener un usuario por UID
 export const getUserByUID = async (uid) => {
     try {
         const usersCollection = collection(db, 'users');
-        const q = query(usersCollection, where('UID', '==', uid));
+        const q = query(usersCollection, where('userUID', '==', uid));
         const usersSnapshot = await getDocs(q);
         if (!usersSnapshot.empty) {
-            const user = usersSnapshot.docs[0]; // Como el UID es único, solo debería haber un resultado
+            const user = usersSnapshot.docs[0];
             return { id: user.id, ...user.data() };
-        } else {
-            console.log("User with UID not found");
-            return null;
         }
+        return null;
     } catch (error) {
         console.error("Error fetching user by UID:", error);
         throw error;
@@ -74,7 +65,7 @@ export const getUserByUID = async (uid) => {
 export const createUser = async (user) => {
     try {
         const usersCollection = collection(db, 'users');
-        const docRef = await addDoc(usersCollection, user); // El UID se pasará junto con los demás datos del usuario
+        const docRef = await addDoc(usersCollection, user);
         return docRef.id;
     } catch (error) {
         console.error("Error creating user:", error);
@@ -87,7 +78,6 @@ export const updateUser = async (userId, updatedUser) => {
     try {
         const userRef = doc(db, 'users', userId);
         await updateDoc(userRef, updatedUser);
-        console.log(`User with ID ${userId} updated`);
     } catch (error) {
         console.error("Error updating user:", error);
         throw error;
@@ -99,7 +89,6 @@ export const deleteUser = async (userId) => {
     try {
         const userRef = doc(db, 'users', userId);
         await deleteDoc(userRef);
-        console.log(`User with ID ${userId} deleted`);
     } catch (error) {
         console.error("Error deleting user:", error);
         throw error;
