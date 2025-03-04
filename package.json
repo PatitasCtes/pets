@@ -1,7 +1,7 @@
 {
-  "name": "taskban-user",
+  "name": "patitas-pet",
   "version": "1.0.0",
-  "description": "Servicio de usuarios.",
+  "description": "Servicio de mascotas.",
   "main": "functions/server.js",
   "scripts": {
     "build": "netlify deploy --prod",

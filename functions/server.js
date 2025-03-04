@@ -1,22 +1,29 @@
 import express from "express";
 import cors from "cors";
 import serverless from "serverless-http";
-import { fetchUsers, addUser, fetchUserById, fetchUserByUID, updateUserById, deleteUserById } from "./controllers/userController.js";
-
+import {
+    fetchPetsByCriteria,
+    addPet,
+    fetchPetById,
+    fetchPetByUID,
+    updatePetById,
+    deletePetById,
+} from "./controllers/petController.js";
 const app = express();
 app.use(cors());
 app.use(express.json());
 const router = express.Router();
 
-// Rutas de usuarios
-router.get("/users", fetchUsers); // Obtener usuarios por teamId
-router.post("/users", addUser); // Crear un nuevo usuario
-router.get("/users/uid/:UID", fetchUserByUID); // Obtener un usuario por UID
-router.get("/users/:userId", fetchUserById); // Obtener un usuario por ID
-router.put("/users/:userId", updateUserById); // Actualizar un usuario por ID
-router.delete("/users/:userId", deleteUserById); // Eliminar un usuario por ID
+// Rutas de mascotas
+// Rutas de mascotas
+router.get("/pets", fetchPetsByCriteria); // Obtener mascotas por criterios
+router.get("/pets/uid/:petUID", fetchPetByUID); // Obtener una mascota por UID
+router.get("/pets/:petId", fetchPetById); // Obtener una mascota por ID
+router.post("/pets", addPet); // Crear una nueva mascota
+router.put("/pets/:petId", updatePetById); // Actualizar una mascota por ID
+router.delete("/pets/:petId", deletePetById); // Eliminar una mascota por ID
 
-// Registrar las rutas de usuarios
+// Registrar las rutas de mascotas
 app.use('/.netlify/functions/server', router);
 
 export const handler = serverless(app);
