@@ -14,6 +14,16 @@ import {
 
 // Configuración de Firebase
 const firebaseConfig = {
+    /* patitas callejeras
+    apiKey: "AIzaSyBwP1o7lcy13dmaM7z2oCipp6yX6fmYE8o",
+    authDomain: "patitascallejeras-ctes.firebaseapp.com",
+    projectId: "patitascallejeras-ctes",
+    storageBucket: "patitascallejeras-ctes.firebasestorage.app",
+    messagingSenderId: "180541862775",
+    appId: "1:180541862775:web:8eddfd5eb984472b956772",
+    measurementId: "G-M9983Q23EY"*/
+
+    // taskban
     apiKey: "AIzaSyCx8GI5km0guJojFuOb9KDKNSclqFQBhLI",
     authDomain: "taskban-v1.firebaseapp.com",
     projectId: "taskban-v1",
