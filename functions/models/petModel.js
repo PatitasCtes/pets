@@ -1,4 +1,6 @@
 import { initializeApp } from "firebase/app";
+
+
 import {
     getFirestore,
     collection,
@@ -12,6 +14,7 @@ import {
     doc,
 } from "firebase/firestore";
 
+
 // Configuración de Firebase
 const firebaseConfig = {
     /* patitas callejeras
@@ -23,7 +26,8 @@ const firebaseConfig = {
     appId: "1:180541862775:web:8eddfd5eb984472b956772",
     measurementId: "G-M9983Q23EY"*/
 
-    // taskban
+    // taskban 
+    /* */
     apiKey: "AIzaSyCx8GI5km0guJojFuOb9KDKNSclqFQBhLI",
     authDomain: "taskban-v1.firebaseapp.com",
     projectId: "taskban-v1",
@@ -37,6 +41,34 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+
+// Agregar un book (colección de fotos) a una mascota
+// Agregar un book (colección de fotos) a una mascota
+export const addBookToPet = async (petId, photos) => {
+    const petRef = doc(db, 'pets', petId);  // Cambio aquí
+    const petDoc = await getDoc(petRef);   // También actualizamos para obtener el documento
+
+    if (!petDoc.exists()) {
+        throw new Error("Pet not found");
+    }
+
+    // Añadir las fotos al campo book
+    await updateDoc(petRef, {
+        book: photos
+    });
+
+    return { message: "Book added to pet successfully" };
+};
+
+
+// Crear una nueva foto para el book
+export const createPhoto = (url, isCoverPhoto) => {
+    return {
+        url,
+        isCoverPhoto
+    };
+};
+
 // Obtener mascotas según criterios específicos
 export const getPetsByCriteria = async (filters) => {
     try {
@@ -44,7 +76,12 @@ export const getPetsByCriteria = async (filters) => {
         let q = query(petsCollection);
 
         Object.entries(filters).forEach(([key, value]) => {
-            q = query(q, where(key, "==", value));
+            if (key === "feelingsWithCats" || key === "feelingsWithDogs" || key === "feelingsWithPeople") {
+                q = query(q, where(key, ">=", value));
+            } else {
+
+                q = query(q, where(key, "==", value));
+            }
         });
 
         const petsSnapshot = await getDocs(q);

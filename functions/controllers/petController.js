@@ -5,7 +5,34 @@ import {
     deletePet,
     getPetByUID,
     getPetsByCriteria,
+    addBookToPet,
+    createPhoto
 } from "../models/petModel.js";
+
+// Agregar un book a la mascota
+export const addBook = async (req, res) => {
+    const { petId, photos } = req.body;
+
+    if (!petId || !photos) {
+        return res.status(400).json({ message: "Pet ID and photos are required" });
+    }
+
+    try {
+        // Validar que cada foto tiene el formato correcto
+        const validPhotos = photos.map(photo => {
+            if (!photo.url) {
+                throw new Error("Each photo must have a URL");
+            }
+            return createPhoto(photo.url, photo.isCoverPhoto || false);
+        });
+
+        const result = await addBookToPet(petId, validPhotos);
+        res.status(201).json(result);
+    } catch (error) {
+        console.error("Error adding book to pet:", error);
+        res.status(500).json({ message: error.message || "Error adding book to pet" });
+    }
+};
 
 // Obtener mascotas según criterios específicos
 export const fetchPetsByCriteria = async (req, res) => {
@@ -101,8 +128,8 @@ export const addPet = async (req, res) => {
         bookID
     } = req.body;
 
-    if (!name || !animal || !status || !petUID) {
-        return res.status(400).json({ message: "Name, animal, status, and petUID are required" });
+    if (!name || !animal || !status) {
+        return res.status(400).json({ message: "Name, animal and status are required" });
     }
 
     try {
