@@ -8,6 +8,7 @@ import {
     fetchPetByUID,
     updatePetById,
     deletePetById,
+    addBook
 } from "./controllers/petController.js";
 const app = express();
 app.use(cors());
@@ -22,7 +23,7 @@ router.get("/pets/:petId", fetchPetById); // Obtener una mascota por ID
 router.post("/pets", addPet); // Crear una nueva mascota
 router.put("/pets/:petId", updatePetById); // Actualizar una mascota por ID
 router.delete("/pets/:petId", deletePetById); // Eliminar una mascota por ID
-
+router.post("/pets/:petId/book", addBook);// Ruta para agregar un book a la mascota
 // Registrar las rutas de mascotas
 app.use('/.netlify/functions/server', router);
 
