@@ -125,7 +125,9 @@ export const addPet = async (req, res) => {
         feelingsWithDogsObs,
         feelingsWithPeople,
         feelingsWithPeopleObs,
-        bookID
+        bookID,
+        size,
+        gender
     } = req.body;
 
     if (!name || !animal || !status) {
@@ -158,7 +160,9 @@ export const addPet = async (req, res) => {
             feelingsWithDogsObs,
             feelingsWithPeople,
             feelingsWithPeopleObs,
-            bookID
+            bookID,
+            size,
+            gender
         });
         res.status(201).json({ message: "Pet created", petId });
     } catch (error) {
